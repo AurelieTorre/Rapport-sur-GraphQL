@@ -8,18 +8,18 @@ GraphQL a été créé pour résoudre certains des problèmes rencontrés avec l
 
 ## Historique et Contexte
 
-1. Origines et Création
-2012: L'origine de GraphQL remonte à Facebook encore lui ;) , où l'équipe de développement travaillait sur des solutions pour améliorer la performance et la flexibilité des API. À cette époque, les développeurs de Facebook cherchaient une méthode plus efficace pour récupérer des données pour leurs applications mobiles, qui devenaient de plus en plus complexes et exigeantes.
-2015: Facebook a officiellement annoncé GraphQL au public et a publié le projet en open source. L'objectif était de proposer une alternative aux API REST en permettant aux clients de spécifier exactement les données dont ils avaient besoin, évitant ainsi la surcharge de données souvent associée aux API REST.
-2. Adoption et Croissance
-2015-2016: Après sa publication, GraphQL a rapidement gagné en popularité dans la communauté des développeurs. Plusieurs entreprises et développeurs individuels ont commencé à expérimenter et à adopter GraphQL pour ses avantages en termes de performance et de flexibilité.
-2016: La GraphQL Foundation a été créée sous l'égide de la Fondation Linux pour gérer le développement et la direction futurs de GraphQL. Cette structure a permis d'assurer que GraphQL resterait ouvert et serait développé en collaboration avec la communauté.
-3. Évolution et Innovations
-2017: L'écosystème GraphQL a commencé à s'enrichir avec de nouveaux outils et bibliothèques. Des frameworks serveurs comme Apollo Server, GraphQL Yoga et des outils de développement comme GraphiQL ont été développés pour faciliter l'utilisation et le déploiement de GraphQL.
-2018: De grandes entreprises comme GitHub, Twitter et Shopify ont adopté GraphQL, démontrant ainsi sa robustesse et sa capacité à gérer des charges de travail importantes et complexes.
-2019-2020: GraphQL a continué à évoluer avec des améliorations apportées au langage de requête et de nouveaux outils pour le développement, la surveillance et la sécurité des API GraphQL. La spécification GraphQL a également été mise à jour pour inclure de nouvelles fonctionnalités et optimisations.
-4. Adoption Généralisée et Standards
-2020 et au-delà: Aujourd'hui, GraphQL est largement adopté par une grande variété d'industries et d'applications, allant des startups aux grandes entreprises. La communauté continue d'innover et de développer de nouveaux outils et pratiques autour de GraphQL, facilitant ainsi son intégration et son utilisation.
+1. Origines et Création  
+2012 : L'origine de GraphQL remonte à Facebook – encore lui ;) – où l'équipe de développement travaillait sur des solutions pour améliorer la performance et la flexibilité des API. À cette époque, les développeurs de Facebook cherchaient une méthode plus efficace pour récupérer des données pour leurs applications mobiles, qui devenaient de plus en plus complexes et exigeantes.
+2. 2015 : Facebook a officiellement annoncé GraphQL au public et a publié le projet en open source. L'objectif était de proposer une alternative aux API REST en permettant aux clients de spécifier exactement les données dont ils avaient besoin, évitant ainsi la surcharge de données souvent associée aux API REST.
+3. Adoption et Croissance  
+2015-2016 : Après sa publication, GraphQL a rapidement gagné en popularité dans la communauté des développeurs. Plusieurs entreprises et développeurs individuels ont commencé à expérimenter et à adopter GraphQL pour ses avantages en termes de performance et de flexibilité.  
+2016 : La GraphQL Foundation a été créée sous l'égide de la Fondation Linux pour gérer le développement et la direction futurs de GraphQL. Cette structure a permis d'assurer que GraphQL resterait ouvert et serait développé en collaboration avec la communauté.
+4. Évolution et Innovations  
+2017 : L'écosystème GraphQL a commencé à s'enrichir avec de nouveaux outils et bibliothèques. Des frameworks serveurs comme Apollo Server, GraphQL Yoga et des outils de développement comme GraphiQL ont été développés pour faciliter l'utilisation et le déploiement de GraphQL.  
+2018 : De grandes entreprises comme GitHub, Twitter et Shopify ont adopté GraphQL, démontrant ainsi sa robustesse et sa capacité à gérer des charges de travail importantes et complexes.  
+2019-2020 : GraphQL a continué à évoluer avec des améliorations apportées au langage de requête et de nouveaux outils pour le développement, la surveillance et la sécurité des API GraphQL. La spécification GraphQL a également été mise à jour pour inclure de nouvelles fonctionnalités et optimisations.
+5. Adoption Généralisée et Standards  
+2020 et au-delà : Aujourd'hui, GraphQL est largement adopté par une grande variété d'industries et d'applications, allant des startups aux grandes entreprises. La communauté continue d'innover et de développer de nouveaux outils et pratiques autour de GraphQL, facilitant ainsi son intégration et son utilisation.
 
 GraphQL a radicalement changé la manière dont les API sont conçues et consommées, offrant une flexibilité et une efficacité accrues par rapport aux méthodes traditionnelles comme REST. Son adoption continue de croître, et il est maintenant un standard de facto pour de nombreuses nouvelles applications API.
 
@@ -29,7 +29,8 @@ GraphQL a radicalement changé la manière dont les API sont conçues et consomm
 
 GraphQL permet aux clients de spécifier précisément les données dont ils ont besoin, et l’ordre dans lequel ils souhaitent les recevoir. Une requête GraphQL ressemble à cela :
 
-```graphql
+```
+graphql
 query {
   user(id: "1") {
     name
@@ -58,7 +59,8 @@ Le schéma est au cœur de GraphQL. Il définit les types de données disponible
 
 Voici un exemple de schéma simple :
 
-```graphql
+```
+graphql
 type User {
   id: ID!
   name: String!
@@ -105,7 +107,8 @@ Le schéma contient deux espèces de super-types que sont Query et Mutation.Ils 
 
 Les résolveurs sont des fonctions qui connectent les types de GraphQL à vos données réelles. Un résolveur pour récupérer un utilisateur par ID pourrait ressembler à ceci :
 
-```javascript
+```
+javascript
 const resolvers = {
   Query: {
     user: (parent, args, context, info) => {
@@ -152,7 +155,29 @@ Les requêtes sont les demandes de données et les mutations les ajouts, suppres
 
 ## Mise en place d'un serveur GraphQL
 
-On utilise un outil GraphQL côté client, comme Apollo, et un outil côté serveur, comme express-graphql ou graphql
+On utilise un outil GraphQL côté client, comme Apollo, et un outil côté serveur, comme express-graphql ou graphql.  
+Par exemple en javascript (dans le fichier index.js) : 
+```
+const path = require("path");
+const express = require("express");
+const graphqlHTTP = require("express-graphql");
+const graphql = require("graphql");
+
+const { query } = require(path.resolve("schema/query"));
+const graphQLSchema = new graphql.GraphQLSchema({ query });
+
+const app = express();
+
+app.use(
+    "/graphql",
+    graphqlHTTP({
+        schema: graphQLSchema,
+        graphiql: true
+    })
+);
+
+app.listen(8080);
+```
 
 ## Cas d'Utilisation
 
