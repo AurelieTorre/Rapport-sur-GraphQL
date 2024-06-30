@@ -86,7 +86,8 @@ Pour définir un objet type, on utilise le mot-clé “type” comme dans le cod
 On peut avoir besoin d’une liste d’objets (ex : la liste des commandes qu’a passées un client, ou la liste des fruits dans une de ces commandes). La liste est caractérisée par des crochets, ce qui n’est guère dépaysant.
 
 On peut aussi utiliser des énumérations qui se définissent par le mot-clé enum, et dont le contenu est écrit en majuscules et _ (tiret du bas), par exemple :
-```enum SeasonEnum {
+```
+enum SeasonEnum {
     FALL
     WINTER
     SPRING
